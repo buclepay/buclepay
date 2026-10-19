@@ -1,0 +1,11 @@
+{
+  "name": "@buclepay/button",
+  "version": "1.0.0",
+  "description": "buclePay web button <buclepay-button>: a custom element any site adds with two lines. No dependencies.",
+  "license": "MIT",
+  "private": true,
+  "files": ["buclepay-button.js", "README.md"],
+  "scripts": {
+    "test": "node --test"
+  }
+}
