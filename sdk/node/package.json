@@ -1,0 +1,47 @@
+{
+  "name": "@buclepay/node",
+  "version": "0.1.0",
+  "description": "buclePay for Node: create payment links, read subscriptions, verify webhooks and manage bucleScore rewards. No dependencies.",
+  "type": "module",
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.js"
+    }
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "README.md"
+  ],
+  "license": "MIT",
+  "homepage": "https://buclepay.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/buclepay/buclepay.git",
+    "directory": "sdk/node"
+  },
+  "bugs": {
+    "url": "https://github.com/buclepay/buclepay/issues"
+  },
+  "keywords": [
+    "buclepay",
+    "payments",
+    "recurring",
+    "subscriptions",
+    "stablecoins",
+    "usdt",
+    "usdc",
+    "crypto",
+    "webhooks",
+    "non-custodial"
+  ],
+  "scripts": {
+    "test": "node --test"
+  }
+}

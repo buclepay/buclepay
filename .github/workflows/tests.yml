@@ -1,0 +1,37 @@
+name: tests
+on: [push, pull_request]
+permissions: { contents: read }
+jobs:
+  node:
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: sdk/node } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: node --test
+  flutter:
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: sdk/flutter } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with: { channel: stable }
+      - run: flutter pub get && flutter test
+  example-express:
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: examples/node-express } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: npm install && npm test
+  example-nextjs:
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: examples/nextjs } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: npm install && npx next build
+        env: { BUCLEPAY_API_KEY: bp_ciplaceholder0000000, BUCLEPAY_WHSEC: whsec_ci }

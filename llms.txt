@@ -1,0 +1,31 @@
+# buclePay
+
+> Recurring and one-time payments in stablecoins (USDT, USDC) without custody. A server creates a payment link through the buclePay API, the customer signs once in their own wallet, and buclePay sends signed webhooks for every payment. Money goes straight from the customer's wallet to the merchant's wallet on-chain.
+
+Rules for AI agents are in AGENTS.md: keys only on the server, grant access only from verified webhooks, raw-body signature check, dedupe event ids, system sheet on mobile, bucleScore level for rewards only.
+
+## Docs
+
+- [AGENTS.md](AGENTS.md): rules and step-by-step recipe for AI coding agents
+- [Integration guide](docs/INTEGRATION.md): links, webhooks, mobile, web, bucleScore, API reference, testing, security rules, platforms
+
+## SDKs
+
+- [Node SDK](sdk/node/README.md): `npm i @buclepay/node`, types in sdk/node/index.d.ts
+- [Flutter SDK](sdk/flutter/README.md): `buclepay_checkout`, opens the checkout as a system sheet
+- [Web button](sdk/web/README.md): `<buclepay-button>`, two lines on any site, no dependencies
+
+## Examples
+
+- [Node + Express](examples/node-express): link, webhook and bucleScore rewards
+- [Next.js App Router](examples/nextjs): link, webhook, pay button and bucleScore rewards
+- [Flutter app](sdk/flutter/example)
+
+## Contracts
+
+- BuclePayMandates (the on-chain contract): published after its external audit
+
+## Optional
+
+- [Security policy](SECURITY.md)
+- [Contributing](CONTRIBUTING.md)

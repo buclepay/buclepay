@@ -1,0 +1,14 @@
+{
+  "name": "buclepay-example-nextjs",
+  "private": true,
+  "description": "buclePay with Next.js App Router: route handlers for the payment link and the webhook, plus a pay button.",
+  "scripts": { "dev": "next dev", "build": "next build" },
+  "dependencies": {
+    "@buclepay/node": "file:../../sdk/node",
+    "next": "^15.3.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "server-only": "^0.0.1"
+  },
+  "devDependencies": { "typescript": "^5.8.0", "@types/react": "^19.1.0", "@types/node": "^22.0.0" }
+}

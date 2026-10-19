@@ -1,0 +1,12 @@
+{
+  "name": "buclepay-example-node-express",
+  "private": true,
+  "type": "module",
+  "description": "buclePay with Node + Express: create a payment link and receive signed webhooks.",
+  "scripts": { "start": "node --env-file=.env server.js", "test": "node --test" },
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "@buclepay/node": "file:../../sdk/node",
+    "express": "^5.1.0"
+  }
+}
