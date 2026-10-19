@@ -157,7 +157,7 @@ On a website, open `link.url` with a normal link or redirect. In a web app (SaaS
 Two lines on any page, no dependencies ([sdk/web](../sdk/web/README.md)):
 
 ```html
-<script src="https://app.buclepay.com/js/v1.0.0/buclepay-button.js" integrity="sha384-N/j1epzPDYg2oRPFFC+xgXsomvrGSwdYt+22j9wNWwDQ8SzT2ohvVOWxL/g+r/xs" crossorigin="anonymous" defer></script>
+<script src="https://app.buclepay.com/js/v1.0.1/buclepay-button.js" integrity="sha384-ooi1+8YWECT2Oyw8PDYuriQWeY/ZduIS0eIfnhgdW3DVq56Oxn66tSwKigbSgnPF" crossorigin="anonymous" defer></script>
 
 <buclepay-button link="https://app.buclepay.com/pay/plk_…" label="Subscribe"></buclepay-button>
 ```
@@ -171,14 +171,13 @@ Copy the `<script>` tag exactly: `integrity` lets the visitor's browser refuse t
 | `link` | the payment link (`…/pay/<id>`) or its id. Required |
 | `label` | your own words: "Subscribe", "Pay 20 USD"… Default: "Subscribe" in the page language |
 | `theme` | `dark` (default) · `light` (dark pages, next to another dark button) · `lime` |
-| `logo` | `auto` (default: your logo if you uploaded one) · `on` (logo or initials) · `off` (your logo is already above the button) |
 | `target` | `_self` (default) · `_blank` |
 
-A 56 px pill with your label and, small inside it, "with buclePay". Your logo goes inside the button on the left, in a white circle with a gray border; leave it out (`logo="off"`) when it is already visible right above the button. Name and logo come from `GET /api/pay/brand?link=<id>` (public, read-only, no cookies: only what your payment page already shows).
+A 56 px pill with your label and, small inside it, "with buclePay". No logos inside the button: your brand is already on your page. The button makes no network requests and sets no cookies.
 
 The button only opens the payment page. **Grant access from the verified webhook**, never because someone clicked or came back to your page.
 
-Building your own button instead? Use your own words and the "with buclePay" mark inside it, with the same logo rule.
+Building your own button instead? Use your own words and the "with buclePay" mark inside it, without logos.
 
 ## 5. bucleScore: reward your best customers
 

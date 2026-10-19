@@ -44,7 +44,7 @@ Ready-to-copy projects: [Node + Express](examples/node-express) · [Next.js](exa
 
 ## What your customer sees
 
-**The button** carries your words ("Subscribe") and the "with buclePay" mark. Your logo goes inside only when it is not already visible above it.
+**The button** carries your words ("Subscribe") and the "with buclePay" mark, so your customers know who processes the payment and that it counts toward their bucleScore.
 
 ![Buttons](docs/images/buttons.png)
 

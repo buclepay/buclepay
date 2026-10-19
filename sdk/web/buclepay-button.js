@@ -7,12 +7,11 @@
  *   link   (required) the payment link URL (…/pay/<id>) or just its id
  *   label  the merchant's words: "Subscribe", "Pay 20 USD"… (default: "Subscribe" in the page language)
  *   theme  dark (default) | light | lime
- *   logo   auto (default: the merchant logo if it has one) | on (logo or initials) | off (the logo is already above the button)
  *   target _self (default) | _blank
  *
- * The merchant name and logo come from a public, read-only endpoint (GET <origin>/api/pay/brand?link=<id>). No cookies,
- * no tracking, nothing else is sent. The button is a plain link: the customer pays on buclePay and comes back to the
- * merchant's success URL. Grant access only from the verified webhook, never from this button.
+ * The button is a plain link: it makes no network requests, sets no cookies and tracks nothing. The customer pays on
+ * buclePay and comes back to the merchant's success URL. Grant access only from the verified webhook, never from this button.
+ * (Since 1.0.1 the button carries no merchant logo; a `logo` attribute from 1.0.0 is ignored.)
  */
 (function () {
   'use strict';
@@ -26,8 +25,6 @@
   // default label in the page language; the mark says "with buclePay" in every language (like "Pay with Apple Pay")
   var LABELS = { en: 'Subscribe', es: 'Suscribirme', pt: 'Assinar', fr: "S'abonner" };
   var THEMES = { dark: 1, light: 1, lime: 1 };
-  var LOGOS = { auto: 1, on: 1, off: 1 };
-  var cache = {};
 
   var esc = function (s) {
     return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; });
@@ -46,30 +43,6 @@
     return m ? { origin: u.origin, id: m[1], href: u.href } : null;
   }
 
-  function initials(name) {
-    var w = String(name || '').trim().split(/\s+/).filter(Boolean);
-    return ((w[0] || '').charAt(0) + (w[1] || '').charAt(0)).toUpperCase();
-  }
-
-  /** { name, logo } of the link's merchant; null if the link is off or the request fails. One request per link. */
-  function brand(link) {
-    var key = link.origin + '|' + link.id;
-    if (!cache[key]) {
-      cache[key] = fetch(link.origin + '/api/pay/brand?link=' + encodeURIComponent(link.id), { credentials: 'omit', mode: 'cors' })
-        .then(function (r) { return r.ok ? r.json() : null; })
-        .then(function (b) {
-          if (!b || !b.ok || typeof b.name !== 'string') return null;
-          var logo = null;
-          if (typeof b.logo === 'string') {
-            try { var u = new URL(b.logo, link.origin); if (u.origin === link.origin) logo = u.href; } catch (e) { /* no logo */ }
-          }
-          return { name: b.name.slice(0, 80), logo: logo };
-        })
-        .catch(function () { return null; });
-    }
-    return cache[key];
-  }
-
   var MARK = '<span class="bp"><span>bucl</span><svg viewBox="0 0 60 56"><path class="a" d="M44.5 12.2 A21.5 21.5 0 1 0 45.5 42.9"/>' +
     '<path class="c" d="M13 25 L24 34 L54.5 12.5"/></svg><span class="p">Pay</span></span>';
 
@@ -79,9 +52,6 @@
     '-webkit-tap-highlight-color:transparent;transition:opacity .15s,transform .15s}' +
     'a:hover{opacity:.9}a:active{transform:scale(.98)}a:focus-visible{outline:1px solid #C9C9CE;outline-offset:3px}' +
     'a[aria-disabled=true]{opacity:.45;cursor:not-allowed}' +
-    '.logo{flex:none;width:50px;height:50px;box-sizing:border-box;border-radius:999px;background:#fff;border:1px solid #C9C9CE;' +
-    'display:grid;place-items:center;overflow:hidden;color:#111111;font-size:16px;font-weight:700;letter-spacing:-.02em}' +
-    '.logo img{width:100%;height:100%;object-fit:cover;display:block}.space{flex:none;width:50px}' +
     '.txt{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:3px;padding:0 15px}' +
     '.l{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}' +
     '.w{display:inline-flex;align-items:baseline;gap:4px;font-size:10.5px;font-weight:500;color:#9A9AA2}' +
@@ -100,46 +70,31 @@
     return LABELS[l] ? l : 'en';
   }
 
-  /** The button's HTML. Merchant name and label always escaped; the logo only from the link's own origin. */
+  /** The button's HTML. The label is always escaped. */
   function render(o) {
-    var showLogo = !o.failed && (o.logo === 'on' || (o.logo === 'auto' && o.brand && o.brand.logo));
-    var circle = '';
-    if (showLogo && o.brand) {
-      circle = o.brand.logo ? '<span class="logo" aria-hidden="true"><img alt="" src="' + esc(o.brand.logo) + '" referrerpolicy="no-referrer"></span>'
-        : '<span class="logo" aria-hidden="true">' + esc(initials(o.brand.name)) + '</span>';
-    } else if (showLogo) {
-      circle = '<span class="logo" aria-hidden="true"></span>'; // keeps the size while the name loads
-    }
     var text = '<span class="txt"><span class="l">' + esc(o.label) + '</span><span class="w" aria-hidden="true">with ' + MARK + '</span></span>';
-    var sr = '<span class="sr">with buclePay' + (o.brand ? ' · ' + esc(o.brand.name) : '') + '</span>';
+    var sr = '<span class="sr">with buclePay</span>';
     var attrs = o.link ? 'href="' + esc(o.link.href) + '"' + (o.target === '_blank' ? ' target="_blank" rel="noopener"' : '')
       : 'role="link" aria-disabled="true"';
     return '<style>' + CSS + '</style><span class="' + o.theme + '"><a part="button" ' + attrs + '>' +
-      (circle ? circle + text + '<span class="space"></span>' : text) + sr + '</a></span>';
+      text + sr + '</a></span>';
   }
 
   class Button extends HTMLElement {
-    static get observedAttributes() { return ['link', 'label', 'theme', 'logo', 'target']; }
+    static get observedAttributes() { return ['link', 'label', 'theme', 'target']; }
     connectedCallback() { this._update(); }
     attributeChangedCallback() { if (this._root) this._update(); }
     _update() {
       if (!this._root) this._root = this.attachShadow({ mode: 'open' });
       var link = parseLink(this.getAttribute('link'), BASE);
       var theme = this.getAttribute('theme') || 'dark';
-      var logo = this.getAttribute('logo') || 'auto';
       var o = {
         link: link, label: (this.getAttribute('label') || '').trim().slice(0, 60) || LABELS[lang(this)],
-        theme: THEMES[theme] ? theme : 'dark', logo: LOGOS[logo] ? logo : 'auto', target: this.getAttribute('target'), brand: null, failed: false,
+        theme: THEMES[theme] ? theme : 'dark', target: this.getAttribute('target'),
       };
       if (!link && window.console) console.warn('<buclepay-button>: the "link" attribute must be a buclePay payment link (https://…/pay/<id>)');
       this._root.innerHTML = render(o);
-      if (!link || o.logo === 'off') return Promise.resolve();
-      var self = this, stamp = (this._stamp = {});
-      return brand(link).then(function (b) {
-        if (self._stamp !== stamp) return;
-        if (b) o.brand = b; else o.failed = true; // without the name, no circle: just the label
-        self._root.innerHTML = render(o);
-      });
+      return Promise.resolve();
     }
   }
 

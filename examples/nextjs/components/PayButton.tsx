@@ -1,6 +1,6 @@
 'use client';
 // The button only asks YOUR server for a link and opens it. No key, no amount decided in the browser.
-// Text in your words ("Subscribe"), with the "with buclePay" mark inside. Add your logo inside only if it is not already above.
+// Text in your words ("Subscribe"), with the "with buclePay" mark inside. No logos inside the button.
 import { useState } from 'react';
 
 export function PayButton({ label = 'Subscribe' }: { label?: string }) {
