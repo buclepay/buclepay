@@ -7,7 +7,7 @@ jobs:
     defaults: { run: { working-directory: sdk/node } }
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with: { node-version: 20 }
       - run: node --test
   flutter:
@@ -23,7 +23,7 @@ jobs:
     defaults: { run: { working-directory: examples/node-express } }
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with: { node-version: 20 }
       - run: npm install && npm test
   example-nextjs:
@@ -31,7 +31,7 @@ jobs:
     defaults: { run: { working-directory: examples/nextjs } }
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with: { node-version: 20 }
       - run: npm install && npx next build
         env: { BUCLEPAY_API_KEY: bp_ciplaceholder0000000, BUCLEPAY_WHSEC: whsec_ci }
