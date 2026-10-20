@@ -7,7 +7,7 @@ import { createApp } from '../server.js';
 const whsec = 'whsec_example_secret';
 const fakeFetch = async (url, init) => {
   if (String(url).endsWith('/api/v1/customers/cus_9/perks')) {
-    return new Response(JSON.stringify({ data: { object: 'customer_perks', customer: 'cus_9', level_shared: true, level: 3,
+    return new Response(JSON.stringify({ data: { object: 'customer_perks', customer: 'cus_9', level_shared: true, level: 3, level_name: 'Shine',
       perks: [{ id: 'prk_1', object: 'perk', min_level: 3, kind: 'discount_pct', value: 10, title: '10% off', active: true }] } }), { status: 200 });
   }
   const body = JSON.parse(init.body);
@@ -51,10 +51,11 @@ test('rejects a forged or altered webhook', async () => withServer(async (base) 
 
 test('shows bucleScore rewards only for a customer it knows', async () => withServer(async (base) => {
   const none = await (await fetch(`${base}/rewards`, { headers: { 'x-user-id': 'u5' } })).json();
-  assert.deepEqual(none, { level_shared: false, level: null, perks: [] });
+  assert.deepEqual(none, { level_shared: false, level: null, level_name: null, perks: [] });
   const paid = sign({ id: 'evt_5', type: 'payment.succeeded', data: { object: { subscription: { client_reference_id: 'u5', customer: { id: 'cus_9' } } } } });
   await post(base, '/webhooks/buclepay', paid.body, { 'buclepay-signature': paid.sig, 'content-type': 'application/json' });
   const r = await (await fetch(`${base}/rewards`, { headers: { 'x-user-id': 'u5' } })).json();
   assert.equal(r.level, 3);
+  assert.equal(r.level_name, 'Shine');
   assert.equal(r.perks[0].kind, 'discount_pct');
 }));
