@@ -67,12 +67,12 @@ export function createApp({ bp = new BuclePay(process.env.BUCLEPAY_API_KEY), whs
   // bucleScore: rewards only. Never deny service, ask for deposits, offer credit or change prices by level.
   app.get('/rewards', async (req, res) => {
     const customerId = customers.get(currentUser(req));
-    if (!customerId) return res.json({ level_shared: false, level: null, perks: [] });
+    if (!customerId) return res.json({ level_shared: false, level: null, level_name: null, perks: [] });
     try {
       const { data } = await bp.customers.perks(customerId);
-      res.json({ level_shared: data.level_shared, level: data.level, perks: data.perks });
+      res.json({ level_shared: data.level_shared, level: data.level, level_name: data.level_name, perks: data.perks });
     } catch {
-      res.json({ level_shared: false, level: null, perks: [] }); // rewards are a bonus: never block the user over them
+      res.json({ level_shared: false, level: null, level_name: null, perks: [] }); // rewards are a bonus: never block the user over them
     }
   });
 

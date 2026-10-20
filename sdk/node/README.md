@@ -37,11 +37,11 @@ app.post('/webhooks/buclepay', express.raw({ type: 'application/json' }), (req, 
 
 ## bucleScore: reward your best customers
 
-Each payer has a bucleScore built from all their payments on buclePay. **You never see the score or the history.** You see the customer's **level (1–4)** only if they chose to show it to you, and you use it to give rewards: discounts (1–50%), free charges (1–3), gifts, priority or early access.
+Each payer has a bucleScore built from all their payments on buclePay. **You never see the score or the history.** You see the customer's **level**: Spark, Glow, Shine or Star (1–4) only if they chose to show it to you, and you use it to give rewards: discounts (1–50%), free charges (1–3), gifts, priority or early access.
 
 ```js
 await bp.perks.create({ min_level: 3, kind: 'discount_pct', value: 10, title: '10% off your renewal' });
-const { data } = await bp.customers.perks('cus_…'); // { level_shared, level, perks }
+const { data } = await bp.customers.perks('cus_…'); // { level_shared, level: 3, level_name: 'Shine', perks }
 ```
 
 The level is for rewards only. Never use it to deny service, ask for deposits, offer credit or installments, or charge differently.

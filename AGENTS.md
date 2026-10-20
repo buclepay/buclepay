@@ -51,5 +51,5 @@ Copy from [`examples/`](examples):
 - Errors: `{ error: { code, message, param } }`; the SDK throws `BuclePayError` with `status`, `code`, `param`.
 - Catch up after downtime: `bp.events.list({ starting_after })`.
 - SDK install: `npm i @buclepay/node`. Types: [sdk/node/index.d.ts](sdk/node/index.d.ts). The SDK is one file with no dependencies.
-- bucleScore levels 1–4 (shared by the customer per merchant). Reward errors: `credit_like`, `kind_not_allowed`, `value_out_of_range`, `invalid_level`, `invalid_title`, `too_many` (max 20 active).
+- bucleScore levels: 1 Spark · 2 Glow · 3 Shine · 4 Star (`level` + `level_name`, shared by the customer per merchant). Show the name to users, store the number. Reward errors: `credit_like`, `kind_not_allowed`, `value_out_of_range`, `invalid_level`, `invalid_title`, `too_many` (max 20 active).
 - Networks: Polygon, BNB Chain, Arbitrum, Base (USDC only on Base). Tokens: USDT, USDC.

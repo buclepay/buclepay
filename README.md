@@ -66,11 +66,11 @@ On a website, the ready-made button is two lines: [`<buclepay-button>`](sdk/web/
 
 ![bucleScore](docs/images/buclescore.png)
 
-Every payer builds a bucleScore with their payments. Merchants **never** see the score or the history: only the **level (1–4)**, only if the customer chose to show it, and only to give **rewards** (discounts, free charges, gifts, priority, early access). Using it to deny service, ask for deposits or offer credit is not allowed.
+Every payer builds a bucleScore with their payments. Merchants **never** see the score or the history: only the **level**: Spark, Glow, Shine or Star (1–4), only if the customer chose to show it, and only to give **rewards** (discounts, free charges, gifts, priority, early access). Using it to deny service, ask for deposits or offer credit is not allowed.
 
 ```js
 await bp.perks.create({ min_level: 3, kind: 'discount_pct', value: 10, title: '10% off your renewal' });
-const { data } = await bp.customers.perks('cus_…'); // { level_shared, level, perks }
+const { data } = await bp.customers.perks('cus_…'); // { level_shared, level: 3, level_name: 'Shine', perks }
 ```
 
 ## Platforms (coming soon)

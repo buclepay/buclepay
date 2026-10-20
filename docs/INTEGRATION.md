@@ -183,7 +183,7 @@ Building your own button instead? Use your own words and the "with buclePay" mar
 
 ![bucleScore](images/buclescore.png)
 
-Each payer has a bucleScore built from all their payments on buclePay. **You never see the score or the history.** You see their **level (1 to 4)** only if the customer chose to show it to you (an unchecked box in the checkout; they can remove it anytime in "My account"). Showing it to you never shows it to any other merchant.
+Each payer has a bucleScore built from all their payments on buclePay. **You never see the score or the history.** You see their **level** (1 Spark · 2 Glow · 3 Shine · 4 Star) only if the customer chose to show it to you (an unchecked box in the checkout; they can remove it anytime in "My account"). Showing it to you never shows it to any other merchant.
 
 With that you define **rewards** by level, and customers who share their level get the ones that apply:
 
@@ -200,8 +200,8 @@ Create and remove them from the dashboard (**Customers › Your rewards by level
 ```js
 await bp.perks.create({ min_level: 3, kind: 'discount_pct', value: 10, title: '10% off your renewal' });
 const { data } = await bp.customers.perks('cus_…');
-// { object: 'customer_perks', level_shared: true, level: 4, perks: [ … ] }
-// without permission: { level_shared: false, level: null, perks: [] }
+// { object: 'customer_perks', level_shared: true, level: 4, level_name: 'Star', perks: [ … ] }
+// without permission: { level_shared: false, level: null, level_name: null, perks: [] }
 ```
 
 > The level is for rewards only. Do not use it to deny service, ask for deposits, offer credit or charge differently.

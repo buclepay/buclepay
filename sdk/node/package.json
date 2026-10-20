@@ -1,6 +1,6 @@
 {
   "name": "@buclepay/node",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "buclePay for Node: create payment links, read subscriptions, verify webhooks and manage bucleScore rewards. No dependencies.",
   "type": "module",
   "main": "./index.js",

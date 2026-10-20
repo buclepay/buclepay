@@ -72,9 +72,11 @@ export interface BuclePayEvent {
 }
 
 export type PerkKind = 'discount_pct' | 'free_period' | 'gift' | 'priority' | 'early_access' | 'custom';
-export interface Perk { id: string; object: 'perk'; min_level: 1 | 2 | 3 | 4; kind: PerkKind; value: number | null; title: string }
+/** bucleScore levels: 1 Spark · 2 Glow · 3 Shine · 4 Star. */
+export type LevelName = 'Spark' | 'Glow' | 'Shine' | 'Star';
+export interface Perk { id: string; object: 'perk'; min_level: 1 | 2 | 3 | 4; min_level_name: LevelName; kind: PerkKind; value: number | null; title: string }
 export interface PerkParams { min_level: 1 | 2 | 3 | 4; kind: PerkKind; /** discount_pct 1–50 · free_period 1–3 · the rest take no value */ value?: number; title: string }
-export interface CustomerPerks { object: 'customer_perks'; customer: string; /** the customer agreed to show you their level */ level_shared: boolean; level: 1 | 2 | 3 | 4 | null; perks: Perk[] }
+export interface CustomerPerks { object: 'customer_perks'; customer: string; /** the customer agreed to show you their level */ level_shared: boolean; level: 1 | 2 | 3 | 4 | null; level_name: LevelName | null; perks: Perk[] }
 
 export class BuclePay {
   constructor(apiKey: string, opts?: { baseUrl?: string; timeoutMs?: number; fetch?: typeof fetch });
